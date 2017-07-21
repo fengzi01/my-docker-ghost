@@ -1,7 +1,7 @@
 ghost:
     build: ./ghost
-    expose:
-        - 2368
+    ports:
+        - "2368:2368"
 
 # webb:
 #     build: ./web
