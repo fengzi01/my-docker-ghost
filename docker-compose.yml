@@ -23,7 +23,7 @@ mysql:
     volumes: 
         - ./init_db.sql:/tmp/init_db.sql
         - ./mysql/import_db.sh:/tmp/import_db.sh
-        - /home/work/mysql/data:/var/lib/mysql # 自定义mysql文件夹
+          # - /home/work/mysql/data:/var/lib/mysql # 自定义mysql文件夹
     environment: 
         - "MYSQL_ROOT_PASSWORD=123456"
         - MYSQL_USER=test
