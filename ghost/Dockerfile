@@ -1,6 +1,6 @@
 # http://support.ghost.org/supported-node-versions/
 # https://github.com/nodejs/LTS
-FROM node:4-slim
+FROM fengyuwei/node:4.2.0
 
 RUN groupadd user && useradd --create-home --home-dir /home/user -g user user
 
