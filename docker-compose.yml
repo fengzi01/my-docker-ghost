@@ -1,7 +1,7 @@
 ghost: 
     container_name:docker_myghost
     volumes: 
-        - ../ghost/content:/var/lib/ghost
+        - /home/work/ghost/content:/var/lib/ghost
         - ./ghost/config.js:/var/lib/ghost/config.js
     build: ./ghost
     expose: 
@@ -17,13 +17,13 @@ ghost:
     restart: always
 
 mysql: 
-    image: mysql:5.6.0
+    image: mysql:5.6
     container_name: docker_mysql
     command: mysqld --user=root --verbose
     volumes: 
         - ./init_db.sql:/tmp/init_db.sql
         - ./mysql/import_db.sh:/tmp/import_db.sh
-        - ../mysql/data:/var/lib/mysql # 自定义mysql文件夹
+        - /home/work/mysql/data:/var/lib/mysql # 自定义mysql文件夹
     environment: 
         - "MYSQL_ROOT_PASSWORD=123456"
         - MYSQL_USER=test
