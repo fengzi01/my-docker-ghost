@@ -3,6 +3,20 @@ ghost:
     ports:
         - "2368:2368"
 
+mysql:
+    build: ./mysql
+    expose:
+        - 3306
+    links:
+        - db
+
+nginx:
+    build: ./nginx
+    expose:
+        - 3306
+    links:
+        - db
+
 # webb:
 #     build: ./web
 #     expose:
