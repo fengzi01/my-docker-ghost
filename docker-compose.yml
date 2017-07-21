@@ -2,7 +2,7 @@ ghost:
     container_name:ghost.myghost
     build: ./ghost
     volumes:
-        - /home/work/ghost/content:/var/lib/ghost
+        - ../ghost/content:/var/lib/ghost
         - ./ghost/config.js:/var/lib/ghost/config.js
     expose:
         - "2368"
@@ -23,7 +23,7 @@ mysql:
     volumes:
         - ./init_db.sql:/tmp/init_db.sql
         - ./mysql/import_db.sh:/tmp/import_db.sh
-        - /home/work/mysql/data:/var/lib/mysql # 自定义mysql文件夹
+        - ../mysql/data:/var/lib/mysql # 自定义mysql文件夹
     environment:
         - "MYSQL_ROOT_PASSWORD=123456"
         - MYSQL_USER=test
