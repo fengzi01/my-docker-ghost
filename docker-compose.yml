@@ -1,10 +1,10 @@
-ghost:
+ghost: 
     container_name:docker_myghost
-    volumes:
+    volumes: 
         - ../ghost/content:/var/lib/ghost
         - ./ghost/config.js:/var/lib/ghost/config.js
     build: ./ghost
-    expose:
+    expose: 
         - "2368"
     environment:
         - NODE_ENV=production
@@ -12,62 +12,36 @@ ghost:
         - DB_DATABASE=ghost
         - DB_USER=test
         - DB_PASSWORD=123456
-    links:
+    links: 
         - mysql
-    restart:always
+    restart: always
 
-mysql:
+mysql: 
     image: mysql:5.6.0
     container_name: docker_mysql
     command: mysqld --user=root --verbose
-    volumes:
+    volumes: 
         - ./init_db.sql:/tmp/init_db.sql
         - ./mysql/import_db.sh:/tmp/import_db.sh
         - ../mysql/data:/var/lib/mysql # 自定义mysql文件夹
-    environment:
+    environment: 
         - "MYSQL_ROOT_PASSWORD=123456"
         - MYSQL_USER=test
         - MYSQL_PASSWORD=123456
         - MYSQL_DATABASE=ghost
-    expose:
+    expose: 
         - "3306"
-    ports:
+    ports: 
         - "127.0.0.1:3306:3306"
 
-nginx:
+nginx: 
     build: ./nginx
     container_name: docker_nginx
-    volumes:
+    volumes: 
         - /home/work/nginx/ssl:/etc/nginx/ssl
-    ports:
+    ports: 
         - "80:80"
         - "443:443"
-    links:
+    links: 
         - ghost
-    restart:always
-
-# webb:
-#     build: ./web
-#     expose:
-#         - 80
-
-# webc:
-#     build: ./web
-#     expose:
-#         - 80
-
-# haproxy:
-#     image: haproxy:latest
-#     volumes:
-#         - ./haproxy:/haproxy-override
-#         - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-#     links:
-#         - weba
-#         - webb
-#         - webc
-#     ports:
-#         - "80:80"
-#         - "70:70"
-#     expose:
-#         - "80"
-#         - "70"
+    restart: always
