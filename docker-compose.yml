@@ -1,21 +1,50 @@
 ghost:
+    container_name:ghost.myghost
     build: ./ghost
-    ports:
-        - "2368:2368"
+    volumes:
+        - /home/work/ghost/content:/var/lib/ghost
+        - ./ghost/config.js:/var/lib/ghost/config.js
+    expose:
+        - "2368"
+    environment:
+        - NODE_ENV=production
+        - "WEB_DOMAIN=www.mincooder.com"
+        - DB_DATABASE=ghost
+        - DB_USER=test
+        - DB_PASSWORD=123456
+    links:
+        - mysql
+    restart:always
 
 mysql:
-    build: ./mysql
+    image: mysql:5.6.0
+    container_name: ghost.mysql
+    command: mysqld --user=root --verbose
+    volumes:
+        - ./init_db.sql:/tmp/init_db.sql
+        - ./mysql/import_db.sh:/tmp/import_db.sh
+        - /home/work/mysql/data:/var/lib/mysql # 自定义mysql文件夹
+    environment:
+        - "MYSQL_ROOT_PASSWORD=123456"
+        - MYSQL_USER=test
+        - MYSQL_PASSWORD=123456
+        - MYSQL_DATABASE=ghost
     expose:
-        - 3306
-    links:
-        - db
+        - "3306"
+    ports:
+        - "3306:127.0.0.1:3306"
 
 nginx:
     build: ./nginx
-    expose:
-        - 3306
+    container_name: ghost.nginx
+    volumes:
+        - /home/work/nginx/ssl:/etc/nginx/ssl
+    ports:
+        - "80:80"
+        - "443:443"
     links:
-        - db
+        - ghost
+    restart:always
 
 # webb:
 #     build: ./web
