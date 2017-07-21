@@ -1,9 +1,9 @@
 ghost:
-    container_name:ghost.myghost
-    build: ./ghost
+    container_name:docker_myghost
     volumes:
         - ../ghost/content:/var/lib/ghost
         - ./ghost/config.js:/var/lib/ghost/config.js
+    build: ./ghost
     expose:
         - "2368"
     environment:
@@ -18,7 +18,7 @@ ghost:
 
 mysql:
     image: mysql:5.6.0
-    container_name: ghost.mysql
+    container_name: docker_mysql
     command: mysqld --user=root --verbose
     volumes:
         - ./init_db.sql:/tmp/init_db.sql
@@ -36,7 +36,7 @@ mysql:
 
 nginx:
     build: ./nginx
-    container_name: ghost.nginx
+    container_name: docker_nginx
     volumes:
         - /home/work/nginx/ssl:/etc/nginx/ssl
     ports:
