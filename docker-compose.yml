@@ -1,5 +1,5 @@
 ghost: 
-    container_name:docker_myghost
+    container_name: docker_myghost
     volumes: 
         - /home/work/ghost/content:/var/lib/ghost
         - ./ghost/config.js:/var/lib/ghost/config.js
