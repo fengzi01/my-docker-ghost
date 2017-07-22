@@ -8,6 +8,13 @@ if [[ "$*" == npm*start* ]] && [ "$(id -u)" = '0' ]; then
 fi
 
 if [[ "$*" == npm*start* ]]; then
+
+    if [ ! -d "$GHOST_CONTENT/themes" ]; then
+        # give database a few seconds to initiate before we attempt to connect the first time
+        echo "----------> Sleeping to give database time to initialize..."
+        sleep 30
+    fi
+
 	baseDir="$GHOST_SOURCE/content"
 	for dir in "$baseDir"/*/ "$baseDir"/themes/*/; do
 		targetDir="$GHOST_CONTENT/${dir#$baseDir/}"
