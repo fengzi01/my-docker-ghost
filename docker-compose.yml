@@ -1,49 +1,52 @@
-ghost: 
-    container_name: docker_myghost
-    volumes: 
-        - /home/work/ghost/content:/var/lib/ghost
-        - ./ghost/config.js:/var/lib/ghost/config.js
-    build: ./ghost
-    expose: 
-        - "2368"
-    environment:
-        - "NODE_ENV=production"
-        - "WEB_DOMAIN=www.mincooder.com"
-        - "DB_DATABASE=ghost"
-        - "DB_USER=test"
-        - "DB_PASSWORD=123456"
-    links: 
-        - mysql
-    restart: always
-    ports: 
-        - "2368:2368"
-
-mysql: 
-    image: mysql:5.6
-    container_name: docker_mysql
-    command: mysqld --user=root --verbose
-    volumes: 
-        - ./init_db.sql:/tmp/init_db.sql
-        - ./mysql/import_db.sh:/tmp/import_db.sh
-        - /home/work/mysql/data:/var/lib/mysql # 自定义mysql文件夹
-    environment: 
-        - "MYSQL_ROOT_PASSWORD=123456"
-        - "MYSQL_USER=test"
-        - "MYSQL_PASSWORD=123456"
-        - "MYSQL_DATABASE=ghost"
-    expose: 
-        - "3306"
-    ports: 
-        - "127.0.0.1:3306:3306"
-
-nginx: 
-    build: ./nginx
-    container_name: docker_nginx
-    volumes: 
-        - /home/work/nginx/ssl:/etc/nginx/ssl
-    ports: 
-        - "80:80"
-        - "443:443"
-    links: 
-        - ghost
-    restart: always
+version: '3'
+services: 
+    ghost: 
+        container_name: myghost
+        volumes: 
+            - /home/work/ghost/content:/var/lib/ghost
+            - ./ghost/config.js:/var/lib/ghost/config.js
+        build: ./ghost
+        expose: 
+            - "2368"
+        environment:
+            - "NODE_ENV=production"
+            - "WEB_DOMAIN=www.mincooder.com"
+            - "DB_DATABASE=ghost"
+            - "DB_USER=test"
+            - "DB_PASSWORD=123456"
+        links: 
+            - mysql
+        restart: always
+        ports: 
+            - "2368:2368"
+    
+    mysql: 
+        image: mysql:5.6
+        mem_limit: 128m
+        container_name: mysql
+        command: mysqld --user=root --verbose
+        volumes: 
+            - ./init_db.sql:/tmp/init_db.sql
+            - ./mysql/import_db.sh:/tmp/import_db.sh
+            - /home/work/mysql/data:/var/lib/mysql # 自定义mysql文件夹
+        environment: 
+            - "MYSQL_ROOT_PASSWORD=123456"
+            - "MYSQL_USER=test"
+            - "MYSQL_PASSWORD=123456"
+            - "MYSQL_DATABASE=ghost"
+        expose: 
+            - "3306"
+        ports: 
+            - "127.0.0.1:3306:3306"
+    
+    nginx: 
+        build: ./nginx
+        container_name: nginx
+        volumes: 
+            - /home/work/nginx/ssl:/etc/nginx/ssl
+        ports: 
+            - "80:80"
+            - "443:443"
+        links: 
+            - ghost
+        restart: always
